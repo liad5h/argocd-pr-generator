@@ -10,7 +10,7 @@ spec:
       image: nginx:alpine
       imagePullPolicy: IfNotPresent
       securityContext:
-        runAsNonRoot: true
+        runAsNonRoot: false
         readOnlyRootFilesystem: true
   restartPolicy: Always
   
