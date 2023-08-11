@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: pr-test
+  namespace: argocd
+spec:
+  generators:
+  - clusters: {}
+  - pullRequest:
+      github:
+        owner: liad5h
+        repo: argocd-pr-generator
+        labels:
+          - preview
+      requeueAfterSeconds: 1800
+      filters:
+        - targetBranchMatch: main
+  template:
+    metadata:
+      name: '{{name}}-vault'
+    spec:
+      syncPolicy:
+#        automated: {}
+        syncOptions:
+        - ApplyOutOfSyncOnly=true
+        - FailOnSharedResource=true
+        - PrunePropagationPolicy=orphan
+      project: devops-infra
+      sources:
+      - path: my-app
+        repoURL: https://github.com/liad5h/argocd-pr-generator
+      - repoURL: https://bitbucket.org/controlup-code/vault.git
+        targetRevision: HEAD
+        ref: values
+      destination:
+        server: '{{server}}'
+        namespace: default
