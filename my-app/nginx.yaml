@@ -11,6 +11,6 @@ spec:
       imagePullPolicy: IfNotPresent
       securityContext:
         runAsNonRoot: false
-        readOnlyRootFilesystem: true
+        readOnlyRootFilesystem: false
   restartPolicy: Always
   
